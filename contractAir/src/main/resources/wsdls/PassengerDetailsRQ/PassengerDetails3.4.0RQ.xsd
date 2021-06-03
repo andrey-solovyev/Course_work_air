@@ -1,0 +1,1506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:spct="http://services.sabre.com/sp/common/simple/v3" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:stlp="http://services.sabre.com/STL_Payload/v02_01" targetNamespace="http://services.sabre.com/sp/pd/v3_4" elementFormDefault="qualified">
+    <import namespace="http://services.sabre.com/STL_Payload/v02_01" schemaLocation="built-ins/STL2_Payload_v02_01.xsd"/>
+    <import namespace="http://services.sabre.com/sp/common/simple/v3" schemaLocation="built-ins/SpCommonSimpleTypes_v3.xsd"/>
+    <element name="PassengerDetailsRQ">
+        <complexType>
+            <complexContent>
+                <extension base="stlp:STL_Request_Payload">
+                    <sequence>
+                        <element name="MiscSegmentSellRQ" minOccurs="0">
+                            <complexType>
+                                <sequence>
+                                    <element name="MiscSegment">
+                                        <annotation>
+                                            <documentation>Used to book miscellaneous segments such as Miscellaneous Charge Orders, Insurance Segments, Other product segments.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <sequence>
+                                                <element name="OriginLocation">
+                                                    <annotation>
+                                                        <documentation>Used to specify the location to be associated with the miscellaneous segment.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <attribute name="LocationCode" type="string" use="required">
+                                                            <annotation>
+                                                                <documentation>Used to specify the location code to be associated with the miscellaneous segment.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                    </complexType>
+                                                </element>
+                                                <element name="Text" type="string">
+                                                    <annotation>
+                                                        <documentation>Used to specify free text information to be associated with the miscellaneous segment.</documentation>
+                                                    </annotation>
+                                                </element>
+                                                <element name="VendorPrefs">
+                                                    <annotation>
+                                                        <documentation>Used to specify a particular vendor code.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="Airline">
+                                                                <annotation>
+                                                                    <documentation>Used to specify a particular airline.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <attribute name="Code" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a particular vendor code.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                            </sequence>
+                                            <attribute name="DepartureDateTime" type="spct:date" use="required">
+                                                <annotation>
+                                                    <documentation>Used to specify the date associated with the miscellaneous segment.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                            <attribute name="InsertAfter" type="integer">
+                                                <annotation>
+                                                    <documentation>Used to denote a segment after which the miscellaneous segment needs to be placed.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                            <attribute name="NumberInParty" type="integer" use="required">
+                                                <annotation>
+                                                    <documentation>Used to specify the number of parties associated with the miscellaneous segment.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                            <attribute name="Status" type="string" use="required">
+                                                <annotation>
+                                                    <documentation>Used to specify the action code to be used to sell the segment. Example: "GK".</documentation>
+                                                </annotation>
+                                            </attribute>
+                                            <attribute name="Type" use="required">
+                                                <annotation>
+                                                    <documentation>Used to specify the type of miscellaneous segment, i.e. OTH, MCO, PTA, or INS.</documentation>
+                                                </annotation>
+                                                <simpleType>
+                                                    <restriction base="string">
+                                                        <enumeration value="INS"/>
+                                                        <enumeration value="MCO"/>
+                                                        <enumeration value="OTH"/>
+                                                        <enumeration value="PTA"/>
+                                                    </restriction>
+                                                </simpleType>
+                                            </attribute>
+                                        </complexType>
+                                    </element>
+                                </sequence>
+                            </complexType>
+                        </element>
+                        <element name="PostProcessing" minOccurs="0">
+                            <annotation>
+                                <documentation>Used to specify additional variables used to commit changes to or create a passenger name record.</documentation>
+                            </annotation>
+                            <complexType>
+                                <sequence>
+                                    <element name="RedisplayReservation" minOccurs="0">
+                                        <annotation>
+                                            <documentation>Used to indicate whether or not to redisplay the PNR.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <attribute name="waitInterval">
+                                                <annotation>
+                                                    <documentation>Used  to indicate the wait interval in milliseconds that the system should wait before redisplaying the reservation.</documentation>
+                                                </annotation>
+                                                <simpleType>
+                                                    <restriction base="integer">
+                                                        <minInclusive value="100"/>
+                                                        <maxInclusive value="10000"/>
+                                                    </restriction>
+                                                </simpleType>
+                                            </attribute>
+                                            <attribute name="returnExtendedPriceQuote" type="boolean" default="false">
+                                                <annotation>
+                                                    <documentation>Used to request extended price quote display in the service response. The extended content will be passed at .../TravelItineraryReadRS/PriceQuote.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                        </complexType>
+                                    </element>
+                                    <element name="ARUNK_RQ" minOccurs="0">
+                                        <annotation>
+                                            <documentation>Used to add arrival unknown segments into a passenger name record.
+                                                The system will properly apply them so there is no need to segment select, etc... .</documentation>
+                                        </annotation>
+                                    </element>
+                                    <element name="EndTransactionRQ" minOccurs="0">
+                                        <complexType>
+                                            <sequence>
+                                                <element name="EndTransaction" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to end the transaction and finalize the record.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="Email" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to send an email notification upon end transaction to any email addresses contained within the particular record.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <sequence>
+                                                                        <element name="eTicket" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to send an email notification containing a text-based copy of the eTicket.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="PDF" minOccurs="0">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to send an email notification containing a PDF-based copy of the eTicket.</documentation>
+                                                                                        </annotation>
+                                                                                        <complexType>
+                                                                                            <attribute name="Ind" type="boolean" use="required">
+                                                                                                <annotation>
+                                                                                                    <documentation>Enables the functionality when set to `true`.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                                <attribute name="Ind" type="boolean" use="required">
+                                                                                    <annotation>
+                                                                                        <documentation>Enables the functionality when set to `true`.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                        <element name="Invoice" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to send an email notification containing a text-based copy of the invoice.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <attribute name="Ind" type="boolean" use="required">
+                                                                                    <annotation>
+                                                                                        <documentation>Enables the functionality when set to `true`.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                        <element name="Itinerary" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to send an email notification containing a text-based copy of the itinerary.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="PDF" minOccurs="0">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to send an email notification containing a PDF-based copy of the itinerary.</documentation>
+                                                                                        </annotation>
+                                                                                        <complexType>
+                                                                                            <attribute name="Ind" type="boolean" use="required">
+                                                                                                <annotation>
+                                                                                                    <documentation>Enables the functionality when set to `true`.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                    <element name="Segment" minOccurs="0" maxOccurs="unbounded">
+                                                                                        <complexType>
+                                                                                            <attribute name="EndNumber" type="integer">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify an ending segment in the range to include in the email message.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="Number" type="integer" use="required">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify a segment number to include in the email message.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                                <attribute name="Ind" type="boolean" use="required">
+                                                                                    <annotation>
+                                                                                        <documentation>Enables the functionality when set to `true`.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                        <element name="PersonName" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify a particular passenger name to send the email notification to.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <attribute name="NameNumber" type="string" use="required">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to specify a particular passenger name number to send the email notification to.
+                                                                                            Please note that the email address in the PNR`s email field must be name associated to the specified name number.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                    </sequence>
+                                                                    <attribute name="Ind" type="boolean" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Enables the functionality when set to `true`.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                            <element name="ScheduleChange" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to update schedule changes.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <attribute name="Ind" type="boolean" use="required">
+                                                                        <annotation>
+                                                                            <documentation>The schedule change indicator.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                        <attribute name="Ind" type="boolean" use="required">
+                                                            <annotation>
+                                                                <documentation>Indicates whether the `E` host command should be sent or only the `6` (Source) host command.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                    </complexType>
+                                                </element>
+                                                <element name="Source" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to identify the entity that authorized the changes in a Passenger Name Record.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <attribute name="ReceivedFrom" type="string" use="required">
+                                                            <annotation>
+                                                                <documentation>Used to pass the source name.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                    </complexType>
+                                                </element>
+                                            </sequence>
+                                            <attribute name="shouldCheckRefId" type="boolean" default="false">
+                                                <annotation>
+                                                    <documentation>"shouldCheckRefId" is used to indicate that API will verify whether the service response contains the record locator of the reservation. If the record locator is not returned, system will retry by means of sending another end transaction request this time without .../Source/@ReceivedFrom.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                        </complexType>
+                                    </element>
+                                    <element name="QueuePlaceRQ" minOccurs="0">
+                                        <annotation>
+                                            <documentation>Used to request to place the newly created PNR on a queue.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <sequence>
+                                                <element name="MultiQueuePlace" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to request to place the newly created PNR on multiple queues.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="QueueIdentifier" maxOccurs="20">
+                                                                <annotation>
+                                                                    <documentation>Used to pass a single queue details.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <attribute name="Number" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to pass the queue number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="PrefatoryInstructionCode" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to pass the prefatory instruction code (PIC).</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="PseudoCityCode" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to pass the pseudo city code (PCC).</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                                <element name="QueueInfo" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to request to place the newly created PNR on a single queue.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="QueueIdentifier" maxOccurs="10">
+                                                                <annotation>
+                                                                    <documentation>Used to pass a single queue details.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <attribute name="Name" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify the queue name where the record is to be placed.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="Number" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify the queue number where the record is to be placed.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="PrefatoryInstructionCode" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a prefatory instruction code.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="PseudoCityCode" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a pseudo city code.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                            <element name="UniqueID" minOccurs="0" maxOccurs="6">
+                                                                <complexType>
+                                                                    <attribute name="ID" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a record locator to be queue placed.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                            </sequence>
+                                            <attribute name="NumResponses">
+                                                <annotation>
+                                                    <documentation>Specifies the number of additional messages expected from host response.</documentation>
+                                                </annotation>
+                                                <simpleType>
+                                                    <restriction base="integer">
+                                                        <minInclusive value="1"/>
+                                                        <maxInclusive value="5"/>
+                                                    </restriction>
+                                                </simpleType>
+                                            </attribute>
+                                        </complexType>
+                                    </element>
+                                </sequence>
+                                <attribute name="haltOnInvalidMCT" type="boolean">
+                                    <annotation>
+                                        <documentation>Used to specify whether the service should check and stop processing upon encountering an error indicating that minimum connection time between air itinerary segments is not met.</documentation>
+                                    </annotation>
+                                </attribute>
+                                <attribute name="ignoreAfter" type="boolean">
+                                    <annotation>
+                                        <documentation>Used to perform an ignore to clear out the AAA.
+                                            Please note that it does not close the session.</documentation>
+                                    </annotation>
+                                </attribute>
+                                <attribute name="unmaskCreditCard" type="boolean" default="false">
+                                    <annotation>
+                                        <documentation>Used to unmask credit card information in the TIR response.
+                                            Please note that this attribute has effect only if a user has EPR keyword CCVIEW.</documentation>
+                                    </annotation>
+                                </attribute>
+                            </complexType>
+                        </element>
+                        <element name="PreProcessing" minOccurs="0">
+                            <complexType>
+                                <sequence>
+                                    <element name="UniqueID" minOccurs="0">
+                                        <complexType>
+                                            <attribute name="id" type="string" use="required">
+                                                <annotation>
+                                                    <documentation>Used to specify a record locator.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                        </complexType>
+                                    </element>
+                                </sequence>
+                                <attribute name="ignoreBefore" type="boolean">
+                                    <annotation>
+                                        <documentation>Used to perform an ignore to clear out the AAA.
+                                            Please note that it does not close the session.</documentation>
+                                    </annotation>
+                                </attribute>
+                            </complexType>
+                        </element>
+                        <element name="PriceQuoteInfo" minOccurs="0">
+                            <annotation>
+                                <documentation>Used to associate price quote records stored as a result of a previous Enhanced_AirBookRQ, or Enhanced_AirBookWithTaxRQ with passenger names in the PassengerDetailsRQ.</documentation>
+                            </annotation>
+                            <complexType>
+                                <sequence>
+                                    <element name="Link" maxOccurs="98">
+                                        <complexType>
+                                            <attribute name="hostedCarrier" type="boolean">
+                                                <annotation>
+                                                    <documentation>Used to tell the system that the request is coming from a hosted carrier, since the method of linking price quote records to names is slightly different between SabreSonic-hosted carriers, and Sabre Travel Network-based users.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                            <attribute name="nameNumber" type="string">
+                                                <annotation>
+                                                    <documentation>Used to specify a passenger name number.
+                                                        SabreSonic-hosted carriers can omit `NameNumber` if all passengers need to be associated with a single price quote record.
+                                                        Sabre Travel Network-based users:
+                                                        If you want to associate all passengers with a single price quote record omit the `NameNumber` attribute.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                            <attribute name="record" type="string" use="required">
+                                                <annotation>
+                                                    <documentation>Used to specify a price quote record.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                        </complexType>
+                                    </element>
+                                </sequence>
+                            </complexType>
+                        </element>
+                        <element name="ProfileRQ" minOccurs="0">
+                            <annotation>
+                                <documentation>Used to add profile information.</documentation>
+                            </annotation>
+                            <complexType>
+                                <sequence>
+                                    <element name="UniqueID">
+                                        <annotation>
+                                            <documentation>Used to pass profile ID.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <attribute name="id" type="string" use="required">
+                                                <annotation>
+                                                    <documentation>Used to specify a profile name that is to be moved into the AAA to create the PNR.</documentation>
+                                                </annotation>
+                                            </attribute>
+                                        </complexType>
+                                    </element>
+                                </sequence>
+                            </complexType>
+                        </element>
+                        <element name="SpecialReqDetails" minOccurs="0">
+                            <annotation>
+                                <documentation>Used to add additional special requests such as seats, remarks, SSRs.</documentation>
+                            </annotation>
+                            <complexType>
+                                <sequence>
+                                    <element name="AddRemarkRQ" minOccurs="0">
+                                        <annotation>
+                                            <documentation>Used to add remarks.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <sequence>
+                                                <element name="RemarkInfo">
+                                                    <annotation>
+                                                        <documentation>Used to add details of the remark.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="FOP_Remark" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to add a form of payment remark.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <sequence>
+                                                                        <element name="CC_Info" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to add credit card details.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="PaymentCard">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to add the card details.</documentation>
+                                                                                        </annotation>
+                                                                                        <complexType>
+                                                                                            <attribute name="AirlineCode" type="string">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify an airline code to be used in conjunction with a credit card security code.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="CardSecurityCode" type="string">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify a credit card security code.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="Code" type="string" use="required">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify a credit card vendor code.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="ExpireDate" type="spct:expireDate" use="required">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify a credit card expiration date.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="ExtendedPayment" type="string">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to define the number of months for extended payment.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="ManualApprovalCode" type="string">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to pass a manual credit card approval code.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="Number" type="string" use="required">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify a credit card number.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="SuppressApprovalCode" type="boolean">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify to prevent the Sabre system from generating an approval code when the credit card number is input into the system.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                                <attribute name="Suppress" type="boolean">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to specify whether or not to suppress credit card information on an itinerary.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                    </sequence>
+                                                                    <attribute name="Type" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify the form of payment type.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                            <element name="FutureQueuePlaceRemark" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to send a future queue place remark.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <attribute name="Date" type="spct:date" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a queue placement date.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="PrefatoryInstructionCode" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify the prefatory instruction code.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="PseudoCityCode" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a pseudo city code.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="QueueIdentifier" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a queue name/number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="Time" type="spct:time">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a queue placement time.
+                                                                                Please note that only whole hours can be specified, i.e. 12:00.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                            <element name="Remark" minOccurs="0" maxOccurs="unbounded">
+                                                                <annotation>
+                                                                    <documentation>Used for multiple remark types.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <sequence>
+                                                                        <element name="Text" type="string">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify remark-related text.</documentation>
+                                                                            </annotation>
+                                                                        </element>
+                                                                    </sequence>
+                                                                    <attribute name="Code" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify an alpha sorting character such as: `H`.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="SegmentNumber" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a segment number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="Type" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify the type of remark.
+                                                                                Acceptable values are:
+                                                                                Alpha-Coded,
+                                                                                Client Address,
+                                                                                Corporate,
+                                                                                Delivery Address,
+                                                                                General,
+                                                                                Group Name,
+                                                                                Hidden,
+                                                                                Historical,
+                                                                                Invoice,
+                                                                                Itinerary.</documentation>
+                                                                        </annotation>
+                                                                        <simpleType>
+                                                                            <restriction base="string">
+                                                                                <enumeration value="Alpha-Coded"/>
+                                                                                <enumeration value="Client Address"/>
+                                                                                <enumeration value="Corporate"/>
+                                                                                <enumeration value="Delivery Address"/>
+                                                                                <enumeration value="General"/>
+                                                                                <enumeration value="Group Name"/>
+                                                                                <enumeration value="Hidden"/>
+                                                                                <enumeration value="Historical"/>
+                                                                                <enumeration value="Invoice"/>
+                                                                                <enumeration value="Itinerary"/>
+                                                                            </restriction>
+                                                                        </simpleType>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                            </sequence>
+                                        </complexType>
+                                    </element>
+                                    <element name="AirSeatRQ" minOccurs="0">
+                                        <annotation>
+                                            <documentation>Used to book seats.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <sequence>
+                                                <element name="Seats">
+                                                    <annotation>
+                                                        <documentation>Used to pass seat details.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="Seat" maxOccurs="98">
+                                                                <annotation>
+                                                                    <documentation>Used for a single seat request.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <attribute name="BoardingPass" type="boolean">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify for the system to assign a seat and issue a boarding pass.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="ChangeOfGauge" type="boolean">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a change of gauge of flight.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="NameNumber" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a passenger name number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="Number" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a seat number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="Preference" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a seat preference.
+                                                                                Preference cannot combine with Number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="SegmentNumber" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a segment number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                            </sequence>
+                                        </complexType>
+                                    </element>
+                                    <element name="SpecialServiceRQ" minOccurs="0">
+                                        <annotation>
+                                            <documentation>Used to add SSRs.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <sequence>
+                                                <element name="SpecialServiceInfo">
+                                                    <annotation>
+                                                        <documentation>Used to pass SSR details.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="AdvancePassenger" minOccurs="0" maxOccurs="unbounded">
+                                                                <annotation>
+                                                                    <documentation>Used to specify the APIS (Advance Passenger Information).</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <sequence>
+                                                                        <element name="Document" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify document details.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="IssueCountry" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the document country of issue.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="NationalityCountry" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the document nationality country.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="Visa" minOccurs="0">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass visa document details.</documentation>
+                                                                                        </annotation>
+                                                                                        <complexType>
+                                                                                            <sequence>
+                                                                                                <element name="ApplicableCountry" minOccurs="0" type="string">
+                                                                                                    <annotation>
+                                                                                                        <documentation>Used to pass the visa document applicable country code.
+                                                                                                            You must use a valid 2 or 3 character country code (alpha characters only).</documentation>
+                                                                                                    </annotation>
+                                                                                                </element>
+                                                                                                <element name="PlaceOfBirth" minOccurs="0" type="string">
+                                                                                                    <annotation>
+                                                                                                        <documentation>Used to pass the visa document place of birth.</documentation>
+                                                                                                    </annotation>
+                                                                                                </element>
+                                                                                                <element name="PlaceOfIssue" minOccurs="0" type="string">
+                                                                                                    <annotation>
+                                                                                                        <documentation>Used to pass the visa document place of issue.</documentation>
+                                                                                                    </annotation>
+                                                                                                </element>
+                                                                                            </sequence>
+                                                                                            <attribute name="IssueDate" type="spct:fullDate">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify the visa issue date.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                                <attribute name="ExpirationDate" type="spct:fullDate">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to specify the document expiration date.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                                <attribute name="Number" type="string">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to specify the document number.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                                <attribute name="Type" type="string" use="required">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to specify the document type.
+                                                                                            Acceptable values include:
+                                                                                            "A" - Alien resident card,
+                                                                                            "C" - Permanent resident card,
+                                                                                            "F" - Facilitation document,
+                                                                                            "I" - National ID card,
+                                                                                            "IN" - Nexus Card.
+                                                                                            Also:
+                                                                                            "M" - Military,
+                                                                                            "N" - Naturalization certificate,
+                                                                                            "P" - Passport,
+                                                                                            "T" - Refugee travel document and re-entry permit,
+                                                                                            US Travel document,
+                                                                                            "V" - Border crossing card.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                        <element name="PersonName" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to pass personal details.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="GivenName" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the first name.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="MiddleName" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the middle name.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="Surname" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the surname.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                                <attribute name="DateOfBirth" type="spct:fullDate">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to pass the date of birth.
+                                                                                            It follows the YYYY-MM-DD format.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                                <attribute name="DocumentHolder" type="boolean">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to identify the primary passport holder when the passport document is issued for multiple passengers.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                                <attribute name="Gender">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to pass the gender type code.</documentation>
+                                                                                    </annotation>
+                                                                                    <simpleType>
+                                                                                        <restriction base="string">
+                                                                                            <enumeration value="F"/>
+                                                                                            <enumeration value="M"/>
+                                                                                            <enumeration value="FI"/>
+                                                                                            <enumeration value="MI"/>
+                                                                                            <enumeration value="U"/>
+                                                                                            <enumeration value="X"/>
+                                                                                        </restriction>
+                                                                                    </simpleType>
+                                                                                </attribute>
+                                                                                <attribute name="LapChild" type="boolean">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to identify information associated with a lap child.
+                                                                                            It can only be used together with .../SpecialServiceInfo/AdvancePassenger/Document/Visa
+                                                                                            and .../SpecialServiceInfo/AdvancePassenger/ResidentDestinationAddress.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                                <attribute name="NameNumber" type="string">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to pass the name number. Example 1.1, 2.1. etc.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                        <element name="ResidentDestinationAddress" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to pass residence or destination address.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="City" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the city name.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="Country" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the country code.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="Street" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the street address.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="State" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the state code.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="Zip" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to specify zip or postal code.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                                <attribute name="Type" type="string" use="required">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to specify the address type.
+                                                                                            Acceptable values are:
+                                                                                            "R" - residence address,
+                                                                                            "D" - destination address.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                        <element name="VendorPrefs" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify the vendor preferences.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="Airline">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to specify whether the APIS SSR should reference a hosted or non hosted airline vendor.</documentation>
+                                                                                        </annotation>
+                                                                                        <complexType>
+                                                                                            <attribute name="Hosted" type="boolean">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify if the request is based upon a hosted or a non-hosted carrier, and is required.
+                                                                                                        For Travel Network-based customers "Hosted" can be set to "false" unless the message is being sent to AA.
+                                                                                                        For SabreSonic RES-based customers "Hosted" can be set to "true" when communicating internally, and "false" when sending to any other carrier.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                            </complexType>
+                                                                        </element>
+                                                                    </sequence>
+                                                                    <attribute name="SegmentNumber" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify an itinerary segment to associate the SSR to.
+                                                                                `A` can be specified to associate the SSR to all segments.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                            <element name="SecureFlight" minOccurs="0" maxOccurs="unbounded">
+                                                                <annotation>
+                                                                    <documentation>Used to specify Secure Flight Passenger Data (SFPD).</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <sequence>
+                                                                        <element name="IssueCountry" minOccurs="0" type="string">
+                                                                            <annotation>
+                                                                                <documentation>Used to pass country of issue for "KnownTravelerNumber" or "RedressNumber".</documentation>
+                                                                            </annotation>
+                                                                        </element>
+                                                                        <element name="KnownTravelerNumber" minOccurs="0" type="string">
+                                                                            <annotation>
+                                                                                <documentation>Used to pass the known traveler number.
+                                                                                    "KnownTravelerNumber" cannot combine with ".../PersonName@DateOfBirth" or ".../PersonName@Gender" and "RedressNumber".</documentation>
+                                                                            </annotation>
+                                                                        </element>
+                                                                        <element name="PersonName" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to pass personal details.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="GivenName" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the first name.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                    <element name="Surname" minOccurs="0" type="string">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to pass the surname.</documentation>
+                                                                                        </annotation>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                                <attribute name="DateOfBirth" type="string">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to pass a date of birth.
+                                                                                            "DateOfBirth" and "Gender" cannot combine with "RedressNumber" and "KnownTravelerNumber".
+                                                                                            "DateOfBirth" accepts dates formatted as: YYYY-MM-DD and YY-MM-DD.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                                <attribute name="Gender">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to pass the gender type code.</documentation>
+                                                                                    </annotation>
+                                                                                    <simpleType>
+                                                                                        <restriction base="string">
+                                                                                            <enumeration value="F"/>
+                                                                                            <enumeration value="M"/>
+                                                                                            <enumeration value="FI"/>
+                                                                                            <enumeration value="MI"/>
+                                                                                            <enumeration value="U"/>
+                                                                                            <enumeration value="X"/>
+                                                                                        </restriction>
+                                                                                    </simpleType>
+                                                                                </attribute>
+                                                                                <attribute name="NameNumber" type="string">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to pass the name number. Example 1.1, 2.1. etc.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                        <element name="RedressNumber" minOccurs="0" type="string">
+                                                                            <annotation>
+                                                                                <documentation>Used to pass the redress number.
+                                                                                    "RedressNumber" cannot combine with ".../PersonName@DateOfBirth" or ".../PersonName@Gender" and "KnownTravelerNumber".</documentation>
+                                                                            </annotation>
+                                                                        </element>
+                                                                        <element name="VendorPrefs" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify the vendor preferences.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="Airline">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to specify whether the SFPD SSR should reference a hosted or non hosted airline vendor.</documentation>
+                                                                                        </annotation>
+                                                                                        <complexType>
+                                                                                            <attribute name="Hosted" type="boolean">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify if the request is based upon a hosted or a non-hosted carrier, and is required.
+                                                                                                        For Travel Network-based customers "Hosted" can be set to "false" unless the message is being sent to AA.
+                                                                                                        For SabreSonic RES-based customers "Hosted" can be set to "true" when communicating internally, and "false" when sending to any other carrier.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                            </complexType>
+                                                                        </element>
+                                                                    </sequence>
+                                                                    <attribute name="SegmentNumber" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify an itinerary segment to associate the SSR to.
+                                                                                "A" can be specified to associate the SSR to all segments.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                            <element name="Service" minOccurs="0" maxOccurs="unbounded">
+                                                                <annotation>
+                                                                    <documentation>Used to specify Special Service Request (SSR).</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <sequence>
+                                                                        <element name="PersonName" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to pass personal details.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <attribute name="NameNumber" type="string">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to specify a passenger name number.
+                                                                                            Some SSR codes require a name number.</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                        <element name="Text" minOccurs="0" type="string">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify miscellaneous free text information.
+                                                                                    Many SSR codes require text.</documentation>
+                                                                            </annotation>
+                                                                        </element>
+                                                                        <element name="VendorPrefs" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify the vendor preferences.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="Airline">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to specify whether the SSR should reference a hosted or non hosted airline vendor.</documentation>
+                                                                                        </annotation>
+                                                                                        <complexType>
+                                                                                            <attribute name="Code" type="string">
+                                                                                                <annotation>
+                                                                                                    <documentation>Only applicable to the "OSI" SSRCode, and is used to specify the airline that the SSR needs to be sent to.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                            <attribute name="Hosted" type="boolean">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify if the request is based upon a hosted or a non-hosted carrier.
+                                                                                                        For Travel Network-based customers "HostedCarrier" can be set to "false" unless the message is being sent to AA.
+                                                                                                        For SabreSonic RES-based customers "HostedCarrier" should be set to "true" when communicating internally, and omitted when sending to any other carrier.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                            </complexType>
+                                                                        </element>
+                                                                    </sequence>
+                                                                    <attribute name="SegmentNumber" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify an itinerary segment to associate the SSR to.
+                                                                                If SSR_Code="OSI"  @SegmentNumber cannot be utilized.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="SSR_Code" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify an SSR code such as "WCHR", "WGML", etc.
+                                                                                Please note that it is no longer possible to specify SSR_Code="DOC*", please utilize either "AdvancePassenger" or "SecureFlight" to send document SSRs.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                            </sequence>
+                                        </complexType>
+                                    </element>
+                                </sequence>
+                            </complexType>
+                        </element>
+                        <element name="TravelItineraryAddInfoRQ" minOccurs="0">
+                            <annotation>
+                                <documentation>Used to add passenger/agency information.</documentation>
+                            </annotation>
+                            <complexType>
+                                <sequence>
+                                    <element name="AgencyInfo" minOccurs="0">
+                                        <annotation>
+                                            <documentation>Used to pass agency details.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <sequence>
+                                                <element name="Address" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to add an agency address into the record.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="AddressLine" type="string" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to pass the agency address.</documentation>
+                                                                </annotation>
+                                                            </element>
+                                                            <element name="CityName" type="string">
+                                                                <annotation>
+                                                                    <documentation>Used to pass the agency city name.</documentation>
+                                                                </annotation>
+                                                            </element>
+                                                            <element name="CountryCode" type="string" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to pass the agency country code.</documentation>
+                                                                </annotation>
+                                                            </element>
+                                                            <element name="PostalCode" type="string"  minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to pass the agency postal code.</documentation>
+                                                                </annotation>
+                                                            </element>
+                                                            <element name="StateCountyProv" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to pass the state or country province details.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <attribute name="StateCode" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to pass the state or province code.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                            <element name="StreetNmbr" type="string" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to pass the agency street number.</documentation>
+                                                                </annotation>
+                                                            </element>
+                                                            <element name="VendorPrefs" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Used to specify the vendor preferences.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <sequence>
+                                                                        <element name="Airline">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify whether the agency information should reference a hosted or non hosted airline vendor.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <attribute name="Hosted" type="boolean" use="required">
+                                                                                    <annotation>
+                                                                                        <documentation>Used to specify if the request is based upon a hosted or a non-hosted carrier.
+                                                                                            For Travel Network customers "Hosted" should be set to "false".
+                                                                                            For SabreSonic RES hosted customers "Hosted" should be set to "true".</documentation>
+                                                                                    </annotation>
+                                                                                </attribute>
+                                                                            </complexType>
+                                                                        </element>
+                                                                    </sequence>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                                <element name="Ticketing" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to pass ticketing information.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <attribute name="PseudoCityCode" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to specify a pseudo city code.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="QueueNumber" type="integer">
+                                                            <annotation>
+                                                                <documentation>Used to specify a queue number.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="QueueName" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to specify a special name queue.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="ShortText" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to specify miscellaneous free text.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="TicketTimeLimit" type="spct:dateTime">
+                                                            <annotation>
+                                                                <documentation>Used to specify the ticket time limit.
+                                                                    "TicketTimeLimit" follows this format: MM-DDTHH:00.
+                                                                    "TicketTimeLimit" must be at the top of the hour.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="TicketType" type="string" use="required">
+                                                            <annotation>
+                                                                <documentation>Used to specify the ticket type.
+                                                                    Acceptable values are: "7TAW", "7TAX", "7T-A", 8(time), or 8(time/(date).</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                    </complexType>
+                                                </element>
+                                            </sequence>
+                                        </complexType>
+                                    </element>
+                                    <element name="CustomerInfo" minOccurs="0">
+                                        <annotation>
+                                            <documentation>Used to pass passenger details.</documentation>
+                                        </annotation>
+                                        <complexType>
+                                            <sequence>
+                                                <element name="ContactNumbers" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to pass passenger contact numbers.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="ContactNumber" maxOccurs="unbounded">
+                                                                <annotation>
+                                                                    <documentation>Used to pass contact details for a specific passenger.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <attribute name="InsertAfter" type="integer">
+                                                                        <annotation>
+                                                                            <documentation>Used to add a phone number after or before an existing phone number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="LocationCode" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to override the default city in the application`s Travel Journal Record.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="NameNumber" type="string">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify a passenger name number.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="Phone" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to add customer telephone numbers into the record.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="PhoneUseType" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify the phone type.
+                                                                                Values:
+                                                                                `A` - agency.
+                                                                                `H` - home.
+                                                                                `B` - business.
+                                                                                `F` - fax.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                                <element name="Corporate" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to pass corporate ID into the record.
+                                                            "Corporate" cannot combine with any other qualifier.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="ID" type="string">
+                                                                <annotation>
+                                                                    <documentation>Used to add a corporate ID into the record.
+                                                                        Please note that this qualifier is not applicable to Sabre Sonic Res-based clients.
+                                                                        Furthermore, Sabre Travel Network-based customers need to first have this functionality activated for their particular location by their account representative prior to attempting to utilize this element.</documentation>
+                                                                </annotation>
+                                                            </element>
+                                                        </sequence>
+                                                    </complexType>
+                                                </element>
+                                                <element name="CustLoyalty" minOccurs="0" maxOccurs="unbounded">
+                                                    <annotation>
+                                                        <documentation>Used to pass frequent flyer number information.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <attribute name="MembershipID" type="string" use="required">
+                                                            <annotation>
+                                                                <documentation>Used to add a frequent traveler number into the record.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="NameNumber" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to specify a passenger name number.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="ProgramID" type="string" use="required">
+                                                            <annotation>
+                                                                <documentation>Used to add the carrier code associated with the frequent traveler number.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="SegmentNumber" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to add a segment number to associate the frequent traveler number to.
+                                                                    "SegmentNumber" and "TravelingCarrierCode" cannot combine.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="TravelingCarrierCode" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to transmit the frequent traveler number of one airline to accrue mileage on another carrier.
+                                                                    "SegmentNumber" and "TravelingCarrierCode" cannot combine.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                    </complexType>
+                                                </element>
+                                                <element name="CustomerIdentifier" type="string" minOccurs="0">
+                                                    <annotation>
+                                                        <documentation>Used to add a customer number into the record.
+                                                            Please note that this qualifier is not applicable to Sabre Sonic Res-based clients.
+                                                            The value of identifier can be 6,7, or 10 alphanumeric.</documentation>
+                                                    </annotation>
+                                                </element>
+                                                <element name="Email" minOccurs="0" maxOccurs="unbounded">
+                                                    <annotation>
+                                                        <documentation>Used to pass e-mail details.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <attribute name="Address" type="string" use="required">
+                                                            <annotation>
+                                                                <documentation>Used to add an email address into the record.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="LanguageOverride" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to override the language in the agency`s Travel Journal Record (TJR).</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="NameNumber" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to specify a passenger name number.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="ShortText" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to specify miscellaneous email address-related free text information.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="Type">
+                                                            <annotation>
+                                                                <documentation>Used to specify the type of email address.
+                                                                    Acceptable values for "Type" are:
+                                                                    `BC` - blind copy.
+                                                                    `CC` - carbon copy.
+                                                                    `FR` - from.
+                                                                    `To` - to.</documentation>
+                                                            </annotation>
+                                                            <simpleType>
+                                                                <restriction base="string">
+                                                                    <enumeration value="BC"/>
+                                                                    <enumeration value="CC"/>
+                                                                    <enumeration value="FR"/>
+                                                                    <enumeration value="TO"/>
+                                                                </restriction>
+                                                            </simpleType>
+                                                        </attribute>
+                                                    </complexType>
+                                                </element>
+                                                <element name="PersonName" minOccurs="0" maxOccurs="unbounded">
+                                                    <annotation>
+                                                        <documentation>Used to add passenger names.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                                                        <sequence>
+                                                            <element name="GivenName" type="string" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Passenger first name.</documentation>
+                                                                </annotation>
+                                                            </element>
+                                                            <element name="GroupInfo" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Group details.</documentation>
+                                                                </annotation>
+                                                                <complexType>
+                                                                    <sequence>
+                                                                        <element name="VendorPrefs" minOccurs="0">
+                                                                            <annotation>
+                                                                                <documentation>Used to specify the vendor preferences.</documentation>
+                                                                            </annotation>
+                                                                            <complexType>
+                                                                                <sequence>
+                                                                                    <element name="Airline">
+                                                                                        <annotation>
+                                                                                            <documentation>Used to specify a particular airline.</documentation>
+                                                                                        </annotation>
+                                                                                        <complexType>
+                                                                                            <attribute name="Code" type="string" use="required">
+                                                                                                <annotation>
+                                                                                                    <documentation>Used to specify the airline that the group is travelling on.
+                                                                                                        Please note that this qualifier is not applicable to Sabre Sonic Res-based subscribers, or Sabre Travel Network-based subscribers.</documentation>
+                                                                                                </annotation>
+                                                                                            </attribute>
+                                                                                        </complexType>
+                                                                                    </element>
+                                                                                </sequence>
+                                                                            </complexType>
+                                                                        </element>
+                                                                    </sequence>
+                                                                    <attribute name="Name" type="string" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify miscellaneous group booking-related free text title information.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                    <attribute name="NumSeatsRemaining" type="integer" use="required">
+                                                                        <annotation>
+                                                                            <documentation>Used to specify the number of passengers travelling in a group.</documentation>
+                                                                        </annotation>
+                                                                    </attribute>
+                                                                </complexType>
+                                                            </element>
+                                                            <element name="Surname" type="string" minOccurs="0">
+                                                                <annotation>
+                                                                    <documentation>Passenger surname.</documentation>
+                                                                </annotation>
+                                                            </element>
+                                                        </sequence>
+                                                        <attribute name="Infant" type="boolean">
+                                                            <annotation>
+                                                                <documentation>Used to specify that the particular passenger is an infant.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="NameNumber" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to specify a passenger name number, and is only applicable when used in conjunction with @PassengerType.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="NameReference" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to specify miscellaneous name reference-related information.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                        <attribute name="PassengerType" type="string">
+                                                            <annotation>
+                                                                <documentation>Used to add a passenger type code into the record.
+                                                                    Please note that this qualifier is not applicable to Sabre Sonic Res-based clients.</documentation>
+                                                            </annotation>
+                                                        </attribute>
+                                                    </complexType>
+                                                </element>
+                                            </sequence>
+                                        </complexType>
+                                    </element>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                    <attribute name="haltOnError" type="boolean">
+                        <annotation>
+                            <documentation>Tells the system (if true) to halt processing if any errors are returned from the low level invocation.</documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="ignoreOnError" type="boolean">
+                        <annotation>
+                            <documentation>Tells the system (if true) to ignore the entire transaction if any errors are encountered.</documentation>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
+</schema>

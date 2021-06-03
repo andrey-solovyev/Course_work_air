@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://services.sabre.com/sp/reservation/common/types/v1"
+            xmlns:rct="http://services.sabre.com/sp/reservation/common/types/v1"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://services.sabre.com/sp/reservation/common/types/v1"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified">
+    <xs:simpleType name="shortTrimmedString">
+        <xs:annotation>
+            <xs:documentation>A short text that cannot be blank nor contain only whitespaces</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="128"/>
+            <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="waitIntervalType">
+        <xs:annotation>
+            <xs:documentation>Default wait interval range</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="100"/>
+            <xs:maxInclusive value="10000"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="numAttemptsType">
+        <xs:annotation>
+            <xs:documentation>Default num attempts range</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="6"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xsd:schema>
